@@ -4,7 +4,6 @@ export function ProductCategoryRow(props) {
     const category = props.category
     const products = props.data
 
-
     let rows = []
     products.forEach((product, index) => {
         if (category === product.category) {

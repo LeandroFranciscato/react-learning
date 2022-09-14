@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { ProductCategoryRow } from "./ProductCategoryRow";
-import { ProductRow } from "./ProductRow";
+import { ProductTableHeader } from "./ProductTableHeader";
 
 export function ProductTable(props) {
 
@@ -14,17 +14,17 @@ export function ProductTable(props) {
         const onlyInStock = props.onlyInStock
 
         var array = [
-            { category: "Sporting Goods", price: 29.99, stocked: false, name: "Basketball" },
+            { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
             { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
             { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
-            { category: "Sporting Goods", price: 9.99, stocked: true, name: "Baseball" },
-            { category: "Electronics", price: 199.99, stocked: true, name: "ANexus 7" },
-            { category: "Sporting Goods", price: 49.99, stocked: true, name: "Football" },
+            { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
+            { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
+            { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
         ]
 
         function filterTextSearch(row) {
             return row.category.includes(filterText) ||
-                row.price.includes(filterText) ||
+                row.price.toString().includes(filterText) ||
                 row.name.includes(filterText)
         }
 
@@ -77,6 +77,7 @@ export function ProductTable(props) {
         categories.forEach((category) => {
             if (category === row.category) {
                 exists = true
+                return
             }
         })
         if (!exists) {
@@ -94,10 +95,11 @@ export function ProductTable(props) {
     return (
         <table>
             <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Price ($)</th>
-                </tr>
+                <ProductTableHeader
+                    order={order}
+                    orderDirection={orderDirection}
+                    onOrderChange={val => setOrder(val)}
+                    onOrderDirectionChange={val => setOrderDirection(val)} />
             </thead>
             <tbody>
                 {rows}

@@ -1,21 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { ProductCategoryRow } from "./ProductCategoryRow";
 import { ProductRow } from "./ProductRow";
 
 export function ProductTable(props) {
 
-    const { isLoading, error, data } = useQuery(['useProductData', props.filterText, props.onlyInStock], () => {
+    const [order, setOrder] = useState("name")
+    const [orderDirection, setOrderDirection] = useState("asc")
+
+    const { isLoading, error, data } = useQuery(['useProductData', props.filterText, props.onlyInStock, order, orderDirection], () => {
 
         const filterText = props.filterText
         const onlyInStock = props.onlyInStock
 
         var array = [
-            { category: "Sporting Goods", price: "$29.99", stocked: false, name: "Basketball" },
-            { category: "Electronics", price: "$99.99", stocked: true, name: "iPod Touch" },
-            { category: "Electronics", price: "$399.99", stocked: false, name: "iPhone 5" },
-            { category: "Sporting Goods", price: "$9.99", stocked: true, name: "Baseball" },
-            { category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7" },
-            { category: "Sporting Goods", price: "$49.99", stocked: true, name: "Football" },
+            { category: "Sporting Goods", price: 29.99, stocked: false, name: "Basketball" },
+            { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
+            { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
+            { category: "Sporting Goods", price: 9.99, stocked: true, name: "Baseball" },
+            { category: "Electronics", price: 199.99, stocked: true, name: "ANexus 7" },
+            { category: "Sporting Goods", price: 49.99, stocked: true, name: "Football" },
         ]
 
         function filterTextSearch(row) {
@@ -38,6 +42,28 @@ export function ProductTable(props) {
             }
         })
 
+        if (orderDirection === "asc") {
+            filteredArray.sort((a, b) => {
+                if (a[order] > b[order]) {
+                    return 1
+                }
+                if (a[order] < b[order]) {
+                    return -1
+                }
+                return 0
+            })
+        } else if (orderDirection === "desc") {
+            filteredArray.sort((a, b) => {
+                if (a[order] > b[order]) {
+                    return -1
+                }
+                if (a[order] < b[order]) {
+                    return 1
+                }
+                return 0
+            })
+        }
+
         return filteredArray
     })
 
@@ -45,34 +71,24 @@ export function ProductTable(props) {
 
     if (error) return 'An error has occurred: ' + error.message
 
-    data.sort((a, b) => {
-        if (a.category > b.category) {
-            return 1
+    let categories = []
+    data.forEach((row, index) => {
+        let exists = false
+        categories.forEach((category) => {
+            if (category === row.category) {
+                exists = true
+            }
+        })
+        if (!exists) {
+            categories.push(row.category)
         }
-        if (a.category < b.category) {
-            return -1
-        }
-        return 0
     })
 
     let rows = []
-    let currentCategory = undefined
-    data.forEach((row, index) => {
-        if (currentCategory !== row.category) {
-            rows.push(
-                <ProductCategoryRow
-                    key={row.category}
-                    value={row.category} />
-            )
-        }
+    categories.forEach((category, index) => {
         rows.push(
-            <ProductRow
-                key={index}
-                name={row.name}
-                price={row.price}
-                stocked={row.stocked} />
+            <ProductCategoryRow key={index} category={category} data={data} />
         )
-        currentCategory = row.category
     })
 
     return (

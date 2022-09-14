@@ -3,7 +3,6 @@ export function ProductRow(props) {
         props.name :
         <span style={{ color: 'red' }}> {props.name} </span>;
     return (
-
         <tr>
             <td>{name}</td>
             <td>{props.price}</td>

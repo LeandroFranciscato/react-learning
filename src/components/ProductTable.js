@@ -1,14 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { ProductCategoryRow } from "./ProductCategoryRow";
+import { ProductTableFooter } from "./ProductTableFooter";
 import { ProductTableHeader } from "./ProductTableHeader";
+
+const pageSize = 5
 
 export function ProductTable(props) {
 
     const [order, setOrder] = useState("name")
     const [orderDirection, setOrderDirection] = useState("asc")
+    const [page, setPage] = useState(1)
 
-    const { isLoading, error, data } = useQuery(['useProductData', props.filterText, props.onlyInStock, order, orderDirection], () => {
+    const { isLoading, error, data } = useQuery(['useProductData', props.filterText, props.onlyInStock, order, orderDirection, page], () => {
 
         const filterText = props.filterText
         const onlyInStock = props.onlyInStock
@@ -20,6 +24,49 @@ export function ProductTable(props) {
             { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
             { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
             { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
+            { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
+            { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
+            { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
+            { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
+            { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
+            { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
+            { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
+            { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
+            { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
+            { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
+            { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
+            { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
+            { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
+            { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
+            { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
+            { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
+            { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
+            { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
+            { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
+            { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
+            { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
+            { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
+            { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
+            { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
+            { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
+            { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
+            { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
+            { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
+            { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
+            { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
+            { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
+            { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
+            { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
+            { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
+            { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
+            { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
+            { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
+            { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
+            { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
+            { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
+            { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
+            { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
+
         ]
 
         function filterTextSearch(row) {
@@ -64,7 +111,10 @@ export function ProductTable(props) {
             })
         }
 
-        return filteredArray
+        return {
+            data: filteredArray.slice((page - 1) * pageSize, page * pageSize),
+            count: filteredArray.length
+        }
     })
 
     if (isLoading) return 'Loading...'
@@ -72,7 +122,7 @@ export function ProductTable(props) {
     if (error) return 'An error has occurred: ' + error.message
 
     let categories = []
-    data.forEach((row, index) => {
+    data.data.forEach((row, index) => {
         let exists = false
         categories.forEach((category) => {
             if (category === row.category) {
@@ -88,22 +138,29 @@ export function ProductTable(props) {
     let rows = []
     categories.forEach((category, index) => {
         rows.push(
-            <ProductCategoryRow key={index} category={category} data={data} />
+            <ProductCategoryRow key={index} category={category} data={data.data} />
         )
     })
 
     return (
-        <table>
-            <thead>
-                <ProductTableHeader
-                    order={order}
-                    orderDirection={orderDirection}
-                    onOrderChange={val => setOrder(val)}
-                    onOrderDirectionChange={val => setOrderDirection(val)} />
-            </thead>
-            <tbody>
-                {rows}
-            </tbody>
-        </table>
+        <>
+            <table>
+                <thead>
+                    <ProductTableHeader
+                        order={order}
+                        orderDirection={orderDirection}
+                        onOrderChange={val => setOrder(val)}
+                        onOrderDirectionChange={val => setOrderDirection(val)} />
+                </thead>
+                <tbody>
+                    {rows}
+                </tbody>
+            </table>
+            <ProductTableFooter
+                count={data.count}
+                page={page}
+                pageSize={pageSize}
+                onPageChange={val => setPage(val)} />
+        </>
     )
 }

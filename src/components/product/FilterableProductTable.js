@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
 import { useState } from "react";
 import { ProductTable } from "./ProductTable";
-import { SearchBar } from "./SearchBar";
+import { SearchBar } from "../search-bar/SearchBar";
 
 export function FilterableProductTable() {
 

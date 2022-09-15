@@ -1,48 +1,44 @@
-
-var nameColumn = "Name ↓"
-var priceColumn = "Price ($)"
+import { TableCell, TableRow, TableSortLabel } from "@mui/material"
 
 export function ProductTableHeader(props) {
 
     const order = props.order
     const orderDirection = props.orderDirection
+    const onOrderChange = props.onOrderChange
+    const onOrderDirectionChange = props.onOrderDirectionChange
 
-    var currentOrder = order
     function handleOrderChange(e) {
-        if (currentOrder === e.target.id) {
+        onOrderChange(e.target.id)
+        if (e.target.id === order) {
             if (orderDirection === "asc") {
-                props.onOrderDirectionChange("desc")
+                onOrderDirectionChange("desc")
             } else {
-                props.onOrderDirectionChange("asc")
+                onOrderDirectionChange("asc")
             }
         } else {
-            props.onOrderChange(e.target.id)
-            props.onOrderDirectionChange("asc")
+            onOrderDirectionChange("asc")
         }
-    }
-
-    function handleNameColumnChange() {
-        if (nameColumn === "Name ↓") {
-            nameColumn = "Name ↑"
-        } else {
-            nameColumn = "Name ↓"
-        }
-        priceColumn = "Price ($)"
-    }
-
-    function handlePriceColumnChange() {
-        if (priceColumn === "Price ($) ↓") {
-            priceColumn = "Price ($) ↑"
-        } else {
-            priceColumn = "Price ($) ↓"
-        }
-        nameColumn = "Name"
     }
 
     return (
-        <tr>
-            <th id="name" onClick={e => { handleNameColumnChange(); handleOrderChange(e); }}>{nameColumn}</th>
-            <th id="price" onClick={e => { handlePriceColumnChange(); handleOrderChange(e); }}>{priceColumn}</th>
-        </tr>
+        <TableRow>
+            <TableCell>
+                <TableSortLabel
+                    id="name"
+                    active={order === "name"}
+                    direction={orderDirection}
+                    onClick={handleOrderChange}>Name
+                </TableSortLabel>
+            </TableCell>
+
+            <TableCell>
+                <TableSortLabel
+                    id="price"
+                    active={order === "price"}
+                    direction={orderDirection}
+                    onClick={handleOrderChange}>Price ($)
+                </TableSortLabel>
+            </TableCell>
+        </TableRow>
     )
 }

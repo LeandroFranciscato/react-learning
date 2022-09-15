@@ -1,18 +1,18 @@
+import { Table, TableBody, TableFooter, TableHead } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { ProductCategoryRow } from "./ProductCategoryRow";
 import { ProductTableFooter } from "./ProductTableFooter";
 import { ProductTableHeader } from "./ProductTableHeader";
 
-const pageSize = 5
-
 export function ProductTable(props) {
 
     const [order, setOrder] = useState("name")
     const [orderDirection, setOrderDirection] = useState("asc")
     const [page, setPage] = useState(1)
+    const [pageSize, setPageSize] = useState(10)
 
-    const { isLoading, error, data } = useQuery(['useProductData', props.filterText, props.onlyInStock, order, orderDirection, page], () => {
+    const { isLoading, error, data } = useQuery(['useProductData', props.filterText, props.onlyInStock, order, orderDirection, page, pageSize], () => {
 
         const filterText = props.filterText
         const onlyInStock = props.onlyInStock
@@ -42,31 +42,6 @@ export function ProductTable(props) {
             { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
             { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
             { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
-            { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
-            { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
-            { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
-            { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
-            { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
-            { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
-            { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
-            { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
-            { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
-            { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
-            { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
-            { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
-            { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
-            { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
-            { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
-            { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
-            { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
-            { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
-            { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
-            { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
-            { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
-            { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
-            { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
-            { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
-
         ]
 
         function filterTextSearch(row) {
@@ -144,23 +119,26 @@ export function ProductTable(props) {
 
     return (
         <>
-            <table>
-                <thead>
+            <Table>
+                <TableHead>
                     <ProductTableHeader
                         order={order}
                         orderDirection={orderDirection}
                         onOrderChange={val => setOrder(val)}
                         onOrderDirectionChange={val => setOrderDirection(val)} />
-                </thead>
-                <tbody>
+                </TableHead>
+                <TableBody>
                     {rows}
-                </tbody>
-            </table>
-            <ProductTableFooter
-                count={data.count}
-                page={page}
-                pageSize={pageSize}
-                onPageChange={val => setPage(val)} />
+                </TableBody>
+                <TableFooter>
+                    <ProductTableFooter
+                        count={data.count}
+                        page={page}
+                        pageSize={pageSize}
+                        onPageChange={val => setPage(val)}
+                        onPageSizeChange={val => setPageSize(val)} />
+                </TableFooter>
+            </Table>
         </>
     )
 }

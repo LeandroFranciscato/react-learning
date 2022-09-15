@@ -1,3 +1,5 @@
+import { TableCell, TableRow } from "@mui/material";
+
 export function ProductRow(props) {
     const stocked = props.stocked
     const price = props.price
@@ -6,9 +8,9 @@ export function ProductRow(props) {
         <span style={{ color: 'red' }}> {props.name} </span>;
 
     return (
-        <tr>
-            <td>{name}</td>
-            <td>{price}</td>
-        </tr >
+        <TableRow>
+            <TableCell>{name}</TableCell>
+            <TableCell>{price}</TableCell>
+        </TableRow>
     )
 }

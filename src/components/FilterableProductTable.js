@@ -1,3 +1,4 @@
+import { Container } from "@mui/material";
 import { useState } from "react";
 import { ProductTable } from "./ProductTable";
 import { SearchBar } from "./SearchBar";
@@ -8,7 +9,7 @@ export function FilterableProductTable() {
     const [onlyInStock, setOnlyInStock] = useState(false)
 
     return (
-        <>
+        <Container>
             <SearchBar
                 filterText={filterText}
                 onlyInStock={onlyInStock}
@@ -18,7 +19,7 @@ export function FilterableProductTable() {
             <ProductTable
                 filterText={filterText}
                 onlyInStock={onlyInStock} />
-        </>
+        </Container>
     )
 }
 

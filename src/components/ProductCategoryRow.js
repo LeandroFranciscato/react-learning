@@ -1,3 +1,4 @@
+import { TableCell, TableRow } from "@mui/material";
 import { ProductRow } from "./ProductRow";
 
 export function ProductCategoryRow(props) {
@@ -19,9 +20,9 @@ export function ProductCategoryRow(props) {
 
     return (
         <>
-            <tr>
-                <th>{category}</th>
-            </tr>
+            <TableRow>
+                <TableCell variant="head">{category}</TableCell>
+            </TableRow>
             {rows}
         </>
     )

@@ -1,9 +1,10 @@
-import { Table, TableBody, TableFooter, TableHead } from "@mui/material";
+import { Table, TableBody } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { GenTableHeader } from "./generic-table/GenTableHeader";
+import { GenTableFooter } from "./generic-table/GenTableFooter";
 import { ProductCategoryRow } from "./ProductCategoryRow";
-import { ProductTableFooter } from "./ProductTableFooter";
-import { ProductTableHeader } from "./ProductTableHeader";
+
 
 export function ProductTable(props) {
 
@@ -118,27 +119,22 @@ export function ProductTable(props) {
     })
 
     return (
-        <>
-            <Table>
-                <TableHead>
-                    <ProductTableHeader
-                        order={order}
-                        orderDirection={orderDirection}
-                        onOrderChange={val => setOrder(val)}
-                        onOrderDirectionChange={val => setOrderDirection(val)} />
-                </TableHead>
-                <TableBody>
-                    {rows}
-                </TableBody>
-                <TableFooter>
-                    <ProductTableFooter
-                        count={data.count}
-                        page={page}
-                        pageSize={pageSize}
-                        onPageChange={val => setPage(val)}
-                        onPageSizeChange={val => setPageSize(val)} />
-                </TableFooter>
-            </Table>
-        </>
+        <Table>
+            <GenTableHeader
+                order={order}
+                orderDirection={orderDirection}
+                onOrderChange={val => setOrder(val)}
+                onOrderDirectionChange={val => setOrderDirection(val)}
+                fields={[{ id: "name", name: "Name" }, { id: "price", name: "Price ($)" }]} />
+            <TableBody>
+                {rows}
+            </TableBody>
+            <GenTableFooter
+                count={data.count}
+                page={page}
+                pageSize={pageSize}
+                onPageChange={val => setPage(val)}
+                onPageSizeChange={val => setPageSize(val)} />
+        </Table>
     )
 }

@@ -15,17 +15,25 @@ export function GenTableHeader(props) {
         cells.push(
             <TableCell
                 key={index}>
-                <TableSortLabel
-                    id={field.id}
-                    active={order === field.id}
-                    direction={orderDirection}
-                    onClick={handleOrderChange}>{field.name}
-                </TableSortLabel>
+                {field.id &&
+                    <TableSortLabel
+                        id={field.id}
+                        active={order === field.id}
+                        direction={orderDirection}
+                        onClick={handleOrderChange}>{field.name}
+                    </TableSortLabel>
+                }
+                {!field.id &&
+                    <TableRow>
+                        {field.name}
+                    </TableRow>
+                }
             </TableCell>
         )
     })
 
     function handleOrderChange(e) {
+        if (!e.target.id) return
         onOrderChange(e.target.id)
         if (e.target.id === order) {
             if (orderDirection === "asc") {
@@ -39,10 +47,13 @@ export function GenTableHeader(props) {
     }
 
     return (
-        <TableHead>
-            <TableRow>
-                {cells}
-            </TableRow>
-        </TableHead>
+        <>
+
+            <TableHead>
+                <TableRow>
+                    {cells}
+                </TableRow>
+            </TableHead>
+        </>
     )
 }

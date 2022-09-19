@@ -1,5 +1,6 @@
 
-import { TableCell, TableRow } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
+import { Checkbox, IconButton, TableCell, TableRow } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { GenTable } from "../generic-table/GenTable";
 
@@ -61,9 +62,27 @@ export function UserTable(props) {
             rows.push(
                 <TableRow
                     key={index}>
+                    <TableCell>
+                        {1 === 1 && <Checkbox
+                            checked={true}
+                            onChange={e => { }} />
+                        }
+                    </TableCell>
                     <TableCell>{row.id}</TableCell>
                     <TableCell>{row.title}</TableCell>
                     <TableCell>{row.userId}</TableCell>
+                    <TableCell>
+                        {1 === 1 &&
+                            <>
+                                <IconButton>
+                                    <Edit />
+                                </IconButton>
+                                <IconButton>
+                                    <Delete />
+                                </IconButton>
+                            </>
+                        }
+                    </TableCell>
                 </TableRow>
             )
         })
@@ -72,7 +91,7 @@ export function UserTable(props) {
 
     return (
         <GenTable
-            headerFields={[{ id: "id", name: "ID" }, { id: "title", name: "Title" }, { id: "userId", name: "User ID" }]}
+            headerFields={[{ id: "", name: "Select" }, { id: "id", name: "ID" }, { id: "title", name: "Title" }, { id: "userId", name: "User ID" }, { id: "", name: "Actions" }]}
             useRequestData={useRequestData}
             prepareData={prepareData}
         />

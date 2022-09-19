@@ -1,7 +1,9 @@
+import { Add, Send } from "@mui/icons-material";
+import { Button, MenuItem, Select, Table, TableBody } from "@mui/material";
+import { Stack } from "@mui/system";
 import { useState } from "react";
-import { Table, TableBody } from "@mui/material";
-import { GenTableHeader } from "./GenTableHeader";
 import { GenTableFooter } from "./GenTableFooter";
+import { GenTableHeader } from "./GenTableHeader";
 
 export function GenTable(props) {
 
@@ -25,22 +27,41 @@ export function GenTable(props) {
     const bodyRows = prepareData(data)
 
     return (
-        <Table>
-            <GenTableHeader
-                order={order}
-                orderDirection={orderDirection}
-                onOrderChange={val => setOrder(val)}
-                onOrderDirectionChange={val => setOrderDirection(val)}
-                fields={headerFields} />
-            <TableBody>
-                {bodyRows}
-            </TableBody>
-            <GenTableFooter
-                count={data.count}
-                page={page}
-                pageSize={pageSize}
-                onPageChange={val => setPage(val)}
-                onPageSizeChange={val => setPageSize(val)} />
-        </Table>
+        <>
+            <Stack direction="row" spacing={2} >
+                <Button variant="outlined" startIcon={<Add />}>
+                    Add
+                </Button>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={"actions"}
+                    label="Age"
+                    onChange={e => { }}
+                >
+                    <MenuItem value={"actions"} disabled={true}>Bulk Actions</MenuItem>
+                    <MenuItem value={"delete"}>Delete</MenuItem>
+                </Select>
+                <Button variant="outlined" startIcon={<Send />} disabled={true} />
+            </Stack>
+
+            <Table>
+                <GenTableHeader
+                    order={order}
+                    orderDirection={orderDirection}
+                    onOrderChange={val => setOrder(val)}
+                    onOrderDirectionChange={val => setOrderDirection(val)}
+                    fields={headerFields} />
+                <TableBody>
+                    {bodyRows}
+                </TableBody>
+                <GenTableFooter
+                    count={data.count}
+                    page={page}
+                    pageSize={pageSize}
+                    onPageChange={val => setPage(val)}
+                    onPageSizeChange={val => setPageSize(val)} />
+            </Table>
+        </>
     )
 }

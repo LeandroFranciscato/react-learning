@@ -1,13 +1,26 @@
 
-import { Delete, Edit } from "@mui/icons-material";
-import { Checkbox, IconButton, TableCell, TableRow } from "@mui/material";
+import { Add, Delete, Edit, Send } from "@mui/icons-material";
+import { Button, Checkbox, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TableCell, TableRow } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { GenTable } from "../generic-table/GenTable";
 
 
 export function UserTable(props) {
 
     const filterText = props.filterText
+
+    const [toggleHideSelectList, setToogleHideSelectList] = useState(true)
+    const [bulkActionSelected, setBulkActionSelected] = useState("")
+    const [selectedRows, setSelectedRows] = useState([])
+
+    const headerFields = [
+        { id: "", name: "Select", hidden: toggleHideSelectList },
+        { id: "id", name: "ID" },
+        { id: "title", name: "Title" },
+        { id: "userId", name: "User ID" },
+        { id: "", name: "Actions" }
+    ]
 
     function useRequestData(order, orderDirection, page, pageSize) {
         return useQuery(['useUserData', filterText, order, orderDirection, page, pageSize], async () => {
@@ -62,12 +75,13 @@ export function UserTable(props) {
             rows.push(
                 <TableRow
                     key={index}>
-                    <TableCell>
-                        {1 === 1 && <Checkbox
-                            checked={true}
-                            onChange={e => { }} />
-                        }
-                    </TableCell>
+                    {!toggleHideSelectList &&
+                        <TableCell>
+                            <Checkbox
+                                checked={(selectedRows.includes(row.id))}
+                                onChange={e => handleSelectRow(e, row.id)} />
+                        </TableCell>
+                    }
                     <TableCell>{row.id}</TableCell>
                     <TableCell>{row.title}</TableCell>
                     <TableCell>{row.userId}</TableCell>
@@ -89,11 +103,55 @@ export function UserTable(props) {
         return rows
     }
 
+    function handleSelectRow(e, rowId) {
+        if (!e.target.checked) {
+
+            var newSelectedRows = selectedRows.filter(m => {
+                return (m !== rowId);
+            });
+
+            setSelectedRows(newSelectedRows)
+        } else {
+            setSelectedRows([...selectedRows, rowId])
+        }
+    }
+
+    function onBulkActionSelect(e) {
+        if (e.target.value === "") {
+            setToogleHideSelectList(true)
+        } else {
+            setToogleHideSelectList(false)
+        }
+        setBulkActionSelected(e.target.value)
+    }
+
     return (
-        <GenTable
-            headerFields={[{ id: "", name: "Select" }, { id: "id", name: "ID" }, { id: "title", name: "Title" }, { id: "userId", name: "User ID" }, { id: "", name: "Actions" }]}
-            useRequestData={useRequestData}
-            prepareData={prepareData}
-        />
+        <>
+            <Stack direction="row" spacing={2} >
+                <Button variant="outlined" startIcon={<Add />}>
+                    Add
+                </Button>
+                <FormControl sx={{ minWidth: 150 }}>
+                    <InputLabel id="select-bulk-actions">Bulk Actions</InputLabel>
+                    <Select
+                        labelId="select-bulk-actions"
+                        id="bulk-actions"
+                        label="Bulk Actions"
+                        value={bulkActionSelected}
+                        onChange={onBulkActionSelect}
+                    >
+                        <MenuItem value="">None</MenuItem>
+                        <MenuItem value="delete">Delete</MenuItem>
+                    </Select>
+                </FormControl>
+                <Button variant="outlined" startIcon={<Send />} disabled={true} />
+            </Stack>
+
+            <GenTable
+                headerFields={headerFields}
+                useRequestData={useRequestData}
+                prepareData={prepareData}
+            />
+        </>
     )
 }

@@ -2,7 +2,7 @@ import { TableCell, TableHead, TableRow, TableSortLabel } from "@mui/material"
 
 export function GenTableHeader(props) {
 
-    var fields = [{ id: "", name: "" }]
+    var fields = [{ id: "", name: "", hidden: false }]
     fields = props.fields
 
     const order = props.order
@@ -12,24 +12,26 @@ export function GenTableHeader(props) {
 
     let cells = []
     fields.forEach((field, index) => {
-        cells.push(
-            <TableCell
-                key={index}>
-                {field.id &&
-                    <TableSortLabel
-                        id={field.id}
-                        active={order === field.id}
-                        direction={orderDirection}
-                        onClick={handleOrderChange}>{field.name}
-                    </TableSortLabel>
-                }
-                {!field.id &&
-                    <TableRow>
-                        {field.name}
-                    </TableRow>
-                }
-            </TableCell>
-        )
+        if (!field.hidden) {
+            cells.push(
+                <TableCell
+                    key={index}>
+                    {field.id &&
+                        <TableSortLabel
+                            id={field.id}
+                            active={order === field.id}
+                            direction={orderDirection}
+                            onClick={handleOrderChange}>{field.name}
+                        </TableSortLabel>
+                    }
+                    {!field.id &&
+                        <>
+                            {field.name}
+                        </>
+                    }
+                </TableCell>
+            )
+        }
     })
 
     function handleOrderChange(e) {
@@ -48,7 +50,6 @@ export function GenTableHeader(props) {
 
     return (
         <>
-
             <TableHead>
                 <TableRow>
                     {cells}

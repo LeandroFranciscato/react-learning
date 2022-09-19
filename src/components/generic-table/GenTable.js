@@ -1,6 +1,4 @@
-import { Add, Send } from "@mui/icons-material";
-import { Button, MenuItem, Select, Table, TableBody } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Table, TableBody } from "@mui/material";
 import { useState } from "react";
 import { GenTableFooter } from "./GenTableFooter";
 import { GenTableHeader } from "./GenTableHeader";
@@ -28,23 +26,6 @@ export function GenTable(props) {
 
     return (
         <>
-            <Stack direction="row" spacing={2} >
-                <Button variant="outlined" startIcon={<Add />}>
-                    Add
-                </Button>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={"actions"}
-                    label="Age"
-                    onChange={e => { }}
-                >
-                    <MenuItem value={"actions"} disabled={true}>Bulk Actions</MenuItem>
-                    <MenuItem value={"delete"}>Delete</MenuItem>
-                </Select>
-                <Button variant="outlined" startIcon={<Send />} disabled={true} />
-            </Stack>
-
             <Table>
                 <GenTableHeader
                     order={order}

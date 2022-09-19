@@ -105,11 +105,9 @@ export function UserTable(props) {
 
     function handleSelectRow(e, rowId) {
         if (!e.target.checked) {
-
             var newSelectedRows = selectedRows.filter(m => {
                 return (m !== rowId);
             });
-
             setSelectedRows(newSelectedRows)
         } else {
             setSelectedRows([...selectedRows, rowId])

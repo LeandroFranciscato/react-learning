@@ -10,6 +10,7 @@ export function GenTable(props) {
 
     const useRequestData = props.useRequestData
     const prepareData = props.prepareData
+    const getData = props.getData
 
     const [order, setOrder] = useState(headerFields[0].id)
     const [orderDirection, setOrderDirection] = useState("asc")

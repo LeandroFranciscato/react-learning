@@ -19,10 +19,12 @@ export function GenTableHeader(props) {
     const selectedRows = props.selectedRows
     const setSelectedRows = props.setSelectedRows
     const data = props.data
+    const onAddBtnClicked = props.onAddBtnClicked
+    const onBulkActionExecuted = props.onBulkActionExecuted
+    const aditionalBulkActionMenus = props.aditionalBulkActionMenus
 
     const [bulkActionSelected, setBulkActionSelected] = useState("")
     const [allRowsSelected, setAllRowsSelected] = useState(false)
-
 
     let cells = [
         (showSelectColumn &&
@@ -99,8 +101,10 @@ export function GenTableHeader(props) {
             <TableRow>
                 <TableCell colSpan={12}>
                     <Stack spacing={2} direction="row">
-                        <Button variant="outlined"
-                            startIcon={<Add />}>
+                        <Button
+                            variant="outlined"
+                            startIcon={<Add />}
+                            onClick={onAddBtnClicked}>
                             Add
                         </Button>
 
@@ -115,12 +119,14 @@ export function GenTableHeader(props) {
                             >
                                 <MenuItem value="">None</MenuItem>
                                 <MenuItem value="delete">Delete</MenuItem>
+                                {aditionalBulkActionMenus}
                             </Select>
                         </FormControl>
 
                         <Button
                             variant="outlined"
-                            disabled={selectedRows.length === 0 || bulkActionSelected === ""}>
+                            disabled={selectedRows.length === 0 || bulkActionSelected === ""}
+                            onClick={e => onBulkActionExecuted(bulkActionSelected, selectedRows)}>
                             <Check />
                         </Button>
                     </Stack>

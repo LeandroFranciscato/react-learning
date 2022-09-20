@@ -11,6 +11,9 @@ export function GenTable(props) {
 
     const useRequestData = props.useRequestData
     const prepareData = props.prepareData
+    const onAddBtnClicked = props.onAddBtnClicked
+    const onBulkActionExecuted = props.onBulkActionExecuted
+    const aditionalBulkActionMenus = props.aditionalBulkActionMenus
 
     const [filterText, setFilterText] = useState("")
     const [order, setOrder] = useState(headerFields[0].id)
@@ -36,7 +39,10 @@ export function GenTable(props) {
                 setShowSelectColumn={val => setShowSelectColumn(val)}
                 selectedRows={selectedRows}
                 setSelectedRows={val => setSelectedRows(val)}
-                data={data} />
+                data={data}
+                onAddBtnClicked={onAddBtnClicked}
+                onBulkActionExecuted={onBulkActionExecuted}
+                aditionalBulkActionMenus={aditionalBulkActionMenus} />
             <GenTableBody
                 isLoading={isLoading}
                 error={error}

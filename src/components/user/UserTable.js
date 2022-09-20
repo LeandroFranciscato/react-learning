@@ -1,6 +1,6 @@
 
 import { Delete, Edit } from "@mui/icons-material";
-import { IconButton, TableCell } from "@mui/material";
+import { IconButton, MenuItem, TableCell } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { GenTable } from "../generic-table/GenTable";
 
@@ -69,10 +69,10 @@ export function UserTable() {
                     <TableCell>{row.title}</TableCell>
                     <TableCell>{row.userId}</TableCell>
                     <TableCell>
-                        <IconButton>
+                        <IconButton onClick={() => onEditBtnClicked(row.id)}>
                             <Edit />
                         </IconButton>
-                        <IconButton>
+                        <IconButton onClick={() => onDeleteBtnClicked(row.id)}>
                             <Delete />
                         </IconButton>
                     </TableCell>
@@ -82,11 +82,36 @@ export function UserTable() {
         return rowsCells
     }
 
+    function onEditBtnClicked(rowId) {
+        console.log("edit", rowId)
+    }
+
+    function onDeleteBtnClicked(rowId) {
+        console.log("delete", rowId)
+    }
+
+    function onAddBtnClicked() {
+        console.log("add")
+    }
+
+    const aditionalBulkActionMenus = ([
+        <MenuItem key={"outra-acao-menu"} value="outra-acao">Outra Ação</MenuItem>,
+        <MenuItem key={"outra-acao2-menu"} value="outra-acao2">Outra Ação2</MenuItem>
+    ])
+
+    function onBulkActionExecuted(bulkActionSelected, selectedRows) {
+        console.log(bulkActionSelected)
+        console.log(selectedRows)
+    }
+
     return (
         <GenTable
             headerFields={headerFields}
             useRequestData={useRequestData}
             prepareData={prepareData}
+            onAddBtnClicked={onAddBtnClicked}
+            onBulkActionExecuted={onBulkActionExecuted}
+            aditionalBulkActionMenus={aditionalBulkActionMenus}
         />
     )
 }

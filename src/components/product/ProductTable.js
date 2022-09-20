@@ -1,7 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query";
-import { ProductCategoryRow } from "./ProductCategoryRow";
-import { GenTable } from "./generic-table/GenTable";
+import { GenTable } from "../generic-table/GenTable";
+import { ProductRow } from "./ProductRow";
 
 
 export function ProductTable(props) {
@@ -15,30 +15,16 @@ export function ProductTable(props) {
             console.log('fez a request')
 
             var array = [
-                { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
-                { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
-                { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
-                { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
-                { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
-                { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
-                { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
-                { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
-                { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
-                { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
-                { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
-                { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
-                { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
-                { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
-                { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
-                { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
-                { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
-                { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
-                { category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
-                { category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
-                { category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
-                { category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
-                { category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
-                { category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
+                { id: 1, category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
+                { id: 2, category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
+                { id: 3, category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
+                { id: 4, category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
+                { id: 5, category: "Electronics", price: 199.99, stocked: true, name: "nexus 7" },
+                { id: 6, category: "Sporting Goods", price: 49.99, stocked: true, name: "football" },
+                { id: 7, category: "Sporting Goods", price: 29.99, stocked: false, name: "basketball" },
+                { id: 8, category: "Electronics", price: 99.99, stocked: true, name: "iPod Touch" },
+                { id: 9, category: "Electronics", price: 399.99, stocked: false, name: "iPhone 5" },
+                { id: 10, category: "Sporting Goods", price: 9.99, stocked: true, name: "baseball" },
             ]
 
             function filterTextSearch(row) {
@@ -90,25 +76,39 @@ export function ProductTable(props) {
         })
     }
 
-    function prepareData(data) {
-        let rows = []
-        let categories = []
-        data.data.forEach((row, index) => {
-            let exists = false
-            categories.forEach((category) => {
-                if (category === row.category) {
-                    exists = true
-                    return
+    /*    function prepareData(data) {
+            let rows = []
+            let categories = []
+            data.data.forEach((row, index) => {
+                let exists = false
+                categories.forEach((category) => {
+                    if (category === row.category) {
+                        exists = true
+                        return
+                    }
+                })
+                if (!exists) {
+                    categories.push(row.category)
                 }
             })
-            if (!exists) {
-                categories.push(row.category)
-            }
-        })
-
-        categories.forEach((category, index) => {
+    
+            categories.forEach((category, index) => {
+                rows.push(
+                    //<ProductCategoryRow key={index} category={category} data={data.data} />}
+                )
+            })
+            return rows
+        }
+    */
+    function prepareData(data) {
+        let rows = []
+        data.data.forEach((row, index) => {
             rows.push(
-                <ProductCategoryRow key={index} category={category} data={data.data} />
+                <ProductRow
+                    key={index}
+                    name={row.name}
+                    price={row.price}
+                    stocked={row.stocked} />
             )
         })
         return rows

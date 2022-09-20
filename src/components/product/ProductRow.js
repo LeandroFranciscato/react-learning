@@ -8,9 +8,9 @@ export function ProductRow(props) {
         <span style={{ color: 'red' }}> {props.name} </span>;
 
     return (
-        <TableRow>
+        <>
             <TableCell>{name}</TableCell>
             <TableCell>{price}</TableCell>
-        </TableRow>
+        </>
     )
 }

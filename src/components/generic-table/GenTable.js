@@ -1,4 +1,4 @@
-import { Checkbox, Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { Checkbox, CircularProgress, Table, TableBody, TableCell, TableRow } from "@mui/material";
 import { useState } from "react";
 import { GenTableFooter } from "./GenTableFooter";
 import { GenTableHeader } from "./GenTableHeader";
@@ -11,6 +11,7 @@ export function GenTable(props) {
     const useRequestData = props.useRequestData
     const prepareData = props.prepareData
 
+    const [filterText, setFilterText] = useState("")
     const [order, setOrder] = useState(headerFields[0].id)
     const [orderDirection, setOrderDirection] = useState("asc")
     const [page, setPage] = useState(1)
@@ -29,13 +30,9 @@ export function GenTable(props) {
         }
     }
 
-    const { isLoading, error, data } = useRequestData(order, orderDirection, page, pageSize)
+    const { isLoading, error, data } = useRequestData(filterText, order, orderDirection, page, pageSize)
 
-    if (isLoading) return 'Loading...'
-
-    if (error) return 'An error has occurred: ' + error.message
-
-    const bodyRowCells = prepareData(data)
+    const bodyRowCells = prepareData(data ? data : { data: [], count: 0 })
     let bodyRows = []
     bodyRowCells.forEach((cells, index) => {
         bodyRows.push(
@@ -55,6 +52,8 @@ export function GenTable(props) {
     return (
         <Table>
             <GenTableHeader
+                filterText={filterText}
+                onFilterTextChange={val => setFilterText(val)}
                 order={order}
                 orderDirection={orderDirection}
                 onOrderChange={val => setOrder(val)}
@@ -66,14 +65,29 @@ export function GenTable(props) {
                 setSelectedRows={val => setSelectedRows(val)}
                 data={data} />
             <TableBody>
+                {isLoading &&
+                    <TableRow>
+                        <TableCell colSpan={12} align="center">
+                            <CircularProgress />
+                        </TableCell>
+                    </TableRow>}
+                {error &&
+                    <TableRow>
+                        <TableCell colSpan={12} align="center">
+                            'An error has occurred: ' {error.message}
+                        </TableCell>
+                    </TableRow>
+                }
                 {bodyRows}
             </TableBody>
-            <GenTableFooter
-                count={data.count}
-                page={page}
-                pageSize={pageSize}
-                onPageChange={val => setPage(val)}
-                onPageSizeChange={val => setPageSize(val)} />
+            {!isLoading && !error &&
+                <GenTableFooter
+                    count={data.count}
+                    page={page}
+                    pageSize={pageSize}
+                    onPageChange={val => setPage(val)}
+                    onPageSizeChange={val => setPageSize(val)} />
+            }
         </Table>
     )
 }

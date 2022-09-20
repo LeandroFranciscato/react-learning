@@ -1,12 +1,15 @@
 import { Add, Check } from "@mui/icons-material"
 import { Button, Checkbox, FormControl, InputLabel, MenuItem, Select, Stack, TableCell, TableHead, TableRow, TableSortLabel } from "@mui/material"
 import { useState } from "react"
+import { SearchBar } from "../search-bar/SearchBar"
 
 export function GenTableHeader(props) {
 
     var fields = [{ id: "", name: "" }]
     fields = props.fields
 
+    const filterText = props.filterText
+    const onFilterTextChange = props.onFilterTextChange
     const order = props.order
     const orderDirection = props.orderDirection
     const onOrderChange = props.onOrderChange
@@ -121,6 +124,14 @@ export function GenTableHeader(props) {
                             <Check />
                         </Button>
                     </Stack>
+                </TableCell>
+            </TableRow>
+
+            <TableRow>
+                <TableCell colSpan={12}>
+                    <SearchBar
+                        filterText={filterText}
+                        onFilterTextChange={val => onFilterTextChange(val)} />
                 </TableCell>
             </TableRow>
 

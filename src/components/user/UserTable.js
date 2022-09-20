@@ -4,9 +4,7 @@ import { IconButton, TableCell } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { GenTable } from "../generic-table/GenTable";
 
-export function UserTable(props) {
-
-    const filterText = props.filterText
+export function UserTable() {
 
     const headerFields = [
         { id: "id", name: "ID" },
@@ -15,7 +13,7 @@ export function UserTable(props) {
         { id: "", name: "Actions" }
     ]
 
-    function useRequestData(order, orderDirection, page, pageSize) {
+    function useRequestData(filterText, order, orderDirection, page, pageSize) {
         return useQuery(['useUserData', filterText, order, orderDirection, page, pageSize], async () => {
             const res = await fetch('https://jsonplaceholder.typicode.com/todos');
             const array = await res.json();

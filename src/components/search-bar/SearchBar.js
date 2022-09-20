@@ -1,5 +1,5 @@
 
-import { FormGroup, TextField } from "@mui/material";
+import { FormControl, TextField } from "@mui/material";
 
 export function SearchBar(props) {
 
@@ -7,7 +7,7 @@ export function SearchBar(props) {
     const onFilterTextChange = props.onFilterTextChange
 
     return (
-        <FormGroup>
+        <FormControl fullWidth>
             <TextField
                 id="search_bar"
                 label="Search"
@@ -15,6 +15,6 @@ export function SearchBar(props) {
                 value={filterText}
                 onChange={e => onFilterTextChange(e.target.value)}
                 autoComplete="false" />
-        </FormGroup>
+        </FormControl>
     )
 }

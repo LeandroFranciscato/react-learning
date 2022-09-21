@@ -6,7 +6,6 @@ import { useState } from "react";
 import { GenTable } from "../generic-table/GenTable";
 import { UserForm } from "./UserForm";
 
-
 export function UserTable() {
 
     const [modalOpened, setModalOpened] = useState(false)

@@ -1,8 +1,11 @@
 import { Grid, TextField } from "@mui/material"
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { AppContext } from "../../contexts/App"
 import { GenModal } from "../generic-modal/GenModal"
 
 export function UserForm(props) {
+
+    const appContext = useContext(AppContext)
 
     const editingURL = "https://jsonplaceholder.typicode.com/todos/"
     const initialValues = { id: "", title: "", userId: "" }
@@ -21,8 +24,21 @@ export function UserForm(props) {
     }
 
     function onSave() {
-        console.log(values)
-        setAlert("error saving")
+        if (!values.id || !values.title || !values.userId) {
+            setAlert("ID, Title and UserID must be filled!")
+            return
+        }
+        setOpen(false)
+        setValues(initialValues)
+        setAlert("")
+        appContext.setApp({
+            alert: {
+                shown: true,
+                title: "Nicely done!",
+                severity: "success",
+                message: "User successfully created"
+            }
+        })
     }
 
     return (
@@ -81,6 +97,4 @@ export function UserForm(props) {
             </Grid>
         </GenModal>
     )
-
-
 }

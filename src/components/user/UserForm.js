@@ -4,14 +4,15 @@ import { useState } from "react"
 
 export function UserForm(props) {
 
-    const formInitialValues = { id: "", title: "", userId: "" }
+    const editingURL = "https://jsonplaceholder.typicode.com/todos/"
+    const initialValues = { id: "", title: "", userId: "" }
 
     const open = props.open
     const setOpen = props.setOpen
-    const formFillUrl = props.formFillUrl
+    const editingID = props.editingID
 
     const [alert, setAlert] = useState("")
-    const [values, setValues] = useState(formInitialValues)
+    const [values, setValues] = useState(initialValues)
 
     function handleSetFormValues(e) {
         let auxValues = { ...values }
@@ -19,28 +20,28 @@ export function UserForm(props) {
         setValues(auxValues)
     }
 
-    function onSaveBtnClicked() {
+    function onSave() {
         console.log(values)
         setAlert("error saving")
     }
 
-    const { isLoading, error } = useQuery(["UserForm", formFillUrl], async () => {
-        if (!formFillUrl) {
-            setValues(formInitialValues)
+    const { isLoading, error } = useQuery(["UserForm", editingID], async () => {
+        if (!editingID) {
+            setValues(initialValues)
             setAlert("")
             return {}
         }
-        const res = await fetch(formFillUrl);
+        const res = await fetch(editingURL + editingID);
         const data = await res.json();
 
-        setAlert("")
         setValues(data)
+        setAlert("")
         return data
     })
 
     return (
         <Dialog open={open} onClose={() => setOpen(false)}>
-            <DialogTitle>{formFillUrl ? "Edit User" : "Add User"}</DialogTitle>
+            <DialogTitle>{editingID ? "Edit User" : "Add User"}</DialogTitle>
             <DialogContent>
 
                 {isLoading &&
@@ -108,7 +109,7 @@ export function UserForm(props) {
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => setOpen(false)}>Cancel</Button>
-                <Button onClick={() => onSaveBtnClicked()}>Save</Button>
+                <Button onClick={() => onSave()}>Save</Button>
             </DialogActions>
         </Dialog >
     )

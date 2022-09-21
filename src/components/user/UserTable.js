@@ -10,7 +10,7 @@ import { UserForm } from "./UserForm";
 export function UserTable() {
 
     const [modalOpened, setModalOpened] = useState(false)
-    const [formFillUrl, setFormFillUrl] = useState("")
+    const [formEditingID, setFormEditingID] = useState(0)
 
     const headerFields = [
         { id: "id", name: "ID" },
@@ -89,7 +89,7 @@ export function UserTable() {
     }
 
     function onEditBtnClicked(rowId) {
-        setFormFillUrl("https://jsonplaceholder.typicode.com/todos/" + rowId)
+        setFormEditingID(rowId)
         setModalOpened(true)
     }
 
@@ -98,7 +98,7 @@ export function UserTable() {
     }
 
     function onAddBtnClicked() {
-        setFormFillUrl("")
+        setFormEditingID(0)
         setModalOpened(true)
     }
 
@@ -123,7 +123,7 @@ export function UserTable() {
             <UserForm
                 open={modalOpened}
                 setOpen={setModalOpened}
-                formFillUrl={formFillUrl} />
+                editingID={formEditingID} />
         </>
     )
 }

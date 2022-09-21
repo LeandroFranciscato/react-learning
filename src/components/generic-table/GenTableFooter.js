@@ -2,11 +2,13 @@ import { TableFooter, TablePagination, TableRow } from "@mui/material"
 
 export function GenTableFooter(props) {
 
-    const count = props.count
-    const page = props.page
-    const pageSize = props.pageSize
-    const onPageChange = props.onPageChange
-    const onPageSizeChange = props.onPageSizeChange
+    const {
+        count,
+        page,
+        pageSize,
+        onPageChange,
+        onPageSizeChange
+    } = props
 
     return (
         <TableFooter>

@@ -1,18 +1,16 @@
 import { Grid, TextField } from "@mui/material"
 import { useContext, useState } from "react"
 import { AppContext } from "../../contexts/App"
-import { GenModal } from "../generic-modal/GenModal"
+import { CUModal } from "../generic-modal/CUModal"
 
 export function UserForm(props) {
+
+    const { open, setOpen, editingID } = props
 
     const appContext = useContext(AppContext)
 
     const editingURL = "https://jsonplaceholder.typicode.com/todos/"
     const initialValues = { id: "", title: "", userId: "" }
-
-    const open = props.open
-    const setOpen = props.setOpen
-    const editingID = props.editingID
 
     const [alert, setAlert] = useState("")
     const [values, setValues] = useState(initialValues)
@@ -25,24 +23,29 @@ export function UserForm(props) {
 
     function onSave() {
         if (!values.id || !values.title || !values.userId) {
-            setAlert("ID, Title and UserID must be filled!")
+            setAlert("User successfully created, Title and UserID must be filled!")
             return
         }
+
         setOpen(false)
         setValues(initialValues)
         setAlert("")
+
+        let message = "User successfully created"
+        if (editingID) {
+            message = "User successfully edited"
+        }
         appContext.setApp({
             alert: {
                 shown: true,
-                title: "Nicely done!",
                 severity: "success",
-                message: "User successfully created"
+                message: message
             }
         })
     }
 
     return (
-        <GenModal
+        <CUModal
             entityName="User"
             open={open}
             setOpen={setOpen}
@@ -95,6 +98,6 @@ export function UserForm(props) {
                 </Grid>
 
             </Grid>
-        </GenModal>
+        </CUModal>
     )
 }

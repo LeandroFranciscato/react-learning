@@ -2,7 +2,9 @@
 import { Delete, Edit } from "@mui/icons-material";
 import { IconButton, TableCell } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AppContext } from "../../contexts/App";
+import { GenModal } from "../generic-modal/GenModal";
 import { GenTable } from "../generic-table/GenTable";
 import { UserForm } from "./UserForm";
 
@@ -10,6 +12,10 @@ export function UserTable() {
 
     const [modalOpened, setModalOpened] = useState(false)
     const [formEditingID, setFormEditingID] = useState(0)
+    const [modalDeleteOpened, setModalDeleteOpened] = useState(false)
+    const [deletingIDs, setDeletingIDs] = useState([])
+
+    const appContext = useContext(AppContext)
 
     const headerFields = [
         { id: "id", name: "ID" },
@@ -87,26 +93,43 @@ export function UserTable() {
         return rowsCells
     }
 
-    function onEditBtnClicked(rowId) {
-        setFormEditingID(rowId)
-        setModalOpened(true)
-    }
-
-    function onDeleteBtnClicked(rowId) {
-        console.log("delete", rowId)
-    }
-
     function onAddBtnClicked() {
         setFormEditingID(0)
         setModalOpened(true)
     }
 
-    const aditionalBulkActionMenus = ([])
+    function onEditBtnClicked(rowId) {
+        setFormEditingID(rowId)
+        setModalOpened(true)
+    }
+
+
+    function onDeleteBtnClicked(rowId) {
+        setDeletingIDs([rowId])
+        setModalDeleteOpened(true)
+    }
 
     function onBulkActionExecuted(bulkActionSelected, selectedRows) {
-        console.log(bulkActionSelected)
-        console.log(selectedRows)
+        if (bulkActionSelected === "delete") {
+            setDeletingIDs(selectedRows)
+            setModalDeleteOpened(true)
+            return
+        }
     }
+
+    function deleteRows() {
+        console.log(deletingIDs)
+        setModalDeleteOpened(false)
+        appContext.setApp({
+            alert: {
+                shown: true,
+                severity: "error",
+                message: "error deleting rows, something went wrong!"
+            }
+        })
+    }
+
+    const aditionalBulkActionMenus = ([])
 
     return (
         <>
@@ -116,13 +139,19 @@ export function UserTable() {
                 prepareData={prepareData}
                 onAddBtnClicked={onAddBtnClicked}
                 onBulkActionExecuted={onBulkActionExecuted}
-                aditionalBulkActionMenus={aditionalBulkActionMenus}
-            />
+                aditionalBulkActionMenus={aditionalBulkActionMenus} />
 
             <UserForm
                 open={modalOpened}
                 setOpen={setModalOpened}
                 editingID={formEditingID} />
+
+            <GenModal
+                open={modalDeleteOpened}
+                setOpen={setModalDeleteOpened}
+                title=""
+                text="Confirm Deletion?"
+                onConfirm={deleteRows} />
         </>
     )
 }

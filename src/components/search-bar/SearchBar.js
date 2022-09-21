@@ -3,8 +3,7 @@ import { FormControl, TextField } from "@mui/material";
 
 export function SearchBar(props) {
 
-    const filterText = props.filterText
-    const onFilterTextChange = props.onFilterTextChange
+    const { filterText, onFilterTextChange } = props
 
     return (
         <FormControl fullWidth>

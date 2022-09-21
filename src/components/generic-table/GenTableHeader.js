@@ -5,23 +5,25 @@ import { SearchBar } from "../search-bar/SearchBar"
 
 export function GenTableHeader(props) {
 
+    const {
+        filterText,
+        onFilterTextChange,
+        order,
+        orderDirection,
+        onOrderChange,
+        onOrderDirectionChange,
+        showSelectColumn,
+        setShowSelectColumn,
+        selectedRows,
+        setSelectedRows,
+        data,
+        onAddBtnClicked,
+        onBulkActionExecuted,
+        aditionalBulkActionMenus
+    } = props
+
     var fields = [{ id: "", name: "" }]
     fields = props.fields
-
-    const filterText = props.filterText
-    const onFilterTextChange = props.onFilterTextChange
-    const order = props.order
-    const orderDirection = props.orderDirection
-    const onOrderChange = props.onOrderChange
-    const onOrderDirectionChange = props.onOrderDirectionChange
-    const showSelectColumn = props.showSelectColumn
-    const setShowSelectColumn = props.setShowSelectColumn
-    const selectedRows = props.selectedRows
-    const setSelectedRows = props.setSelectedRows
-    const data = props.data
-    const onAddBtnClicked = props.onAddBtnClicked
-    const onBulkActionExecuted = props.onBulkActionExecuted
-    const aditionalBulkActionMenus = props.aditionalBulkActionMenus
 
     const [bulkActionSelected, setBulkActionSelected] = useState("")
     const [allRowsSelected, setAllRowsSelected] = useState(false)

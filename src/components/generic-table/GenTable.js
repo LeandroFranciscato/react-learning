@@ -6,14 +6,10 @@ import { GenTableHeader } from "./GenTableHeader";
 
 export function GenTable(props) {
 
+    const { useRequestData, prepareData, onAddBtnClicked, onBulkActionExecuted, aditionalBulkActionMenus } = props
+
     let headerFields = [{ id: "name", name: "Name" }]
     headerFields = props.headerFields
-
-    const useRequestData = props.useRequestData
-    const prepareData = props.prepareData
-    const onAddBtnClicked = props.onAddBtnClicked
-    const onBulkActionExecuted = props.onBulkActionExecuted
-    const aditionalBulkActionMenus = props.aditionalBulkActionMenus
 
     const [filterText, setFilterText] = useState("")
     const [order, setOrder] = useState(headerFields[0].id)

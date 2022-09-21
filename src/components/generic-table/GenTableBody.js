@@ -2,13 +2,15 @@ import { Checkbox, CircularProgress, TableBody, TableCell, TableRow } from "@mui
 
 export function GenTableBody(props) {
 
-    const isLoading = props.isLoading
-    const error = props.error
-    const data = props.data
-    const prepareData = props.prepareData
-    const showSelectColumn = props.showSelectColumn
-    const selectedRows = props.selectedRows
-    const setSelectedRows = props.setSelectedRows
+    const {
+        isLoading,
+        error,
+        data,
+        prepareData,
+        showSelectColumn,
+        selectedRows,
+        setSelectedRows
+    } = props
 
     function handleSelectRow(e, rowId) {
         if (!e.target.checked) {

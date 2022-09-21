@@ -1,6 +1,6 @@
-import { Alert, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@mui/material"
-import { useQuery } from "@tanstack/react-query"
+import { Grid, TextField } from "@mui/material"
 import { useState } from "react"
+import { GenModal } from "../generic-modal/GenModal"
 
 export function UserForm(props) {
 
@@ -25,93 +25,61 @@ export function UserForm(props) {
         setAlert("error saving")
     }
 
-    const { isLoading, error } = useQuery(["UserForm", editingID], async () => {
-        if (!editingID) {
-            setValues(initialValues)
-            setAlert("")
-            return {}
-        }
-        const res = await fetch(editingURL + editingID);
-        const data = await res.json();
-
-        setValues(data)
-        setAlert("")
-        return data
-    })
-
     return (
-        <Dialog open={open} onClose={() => setOpen(false)}>
-            <DialogTitle>{editingID ? "Edit User" : "Add User"}</DialogTitle>
-            <DialogContent>
+        <GenModal
+            entityName="User"
+            open={open}
+            setOpen={setOpen}
+            editingURL={editingURL}
+            editingID={editingID}
+            initialValues={initialValues}
+            setValues={setValues}
+            alert={alert}
+            setAlert={setAlert}
+            onSave={onSave}
+        >
+            <Grid container spacing={2}>
 
-                {isLoading &&
-                    <Grid item xs={12} textAlign="center">
-                        <CircularProgress />
-                    </Grid>
-                }
-
-                {error && "Error: " + error.message}
-
-                {!isLoading && !error &&
-
-                    <Grid container spacing={2}>
-
-                        <Grid item xs={12}>
-                            {alert &&
-                                <Alert severity="error" onClose={() => setAlert("")}>
-                                    {alert}
-                                </Alert>
-                            }
-                        </Grid>
-
-
-                        <Grid item xs={2}>
-                            <TextField
-                                name="id"
-                                variant="outlined"
-                                label="ID"
-                                type="number"
-                                required
-                                value={values.id}
-                                onChange={handleSetFormValues}
-                            ></TextField>
-                        </Grid>
+                <Grid item xs={2}>
+                    <TextField
+                        name="id"
+                        variant="outlined"
+                        label="ID"
+                        type="number"
+                        required
+                        value={values.id}
+                        onChange={handleSetFormValues}
+                    ></TextField>
+                </Grid>
 
 
-                        <Grid item xs={8}>
-                            <TextField
-                                name="title"
-                                fullWidth
-                                variant="outlined"
-                                label="Title"
-                                type="text"
-                                required
-                                value={values.title}
-                                onChange={handleSetFormValues}>
-                            </TextField>
-                        </Grid>
+                <Grid item xs={8}>
+                    <TextField
+                        name="title"
+                        fullWidth
+                        variant="outlined"
+                        label="Title"
+                        type="text"
+                        required
+                        value={values.title}
+                        onChange={handleSetFormValues}>
+                    </TextField>
+                </Grid>
 
-                        <Grid item xs={2}>
-                            <TextField
-                                name="userId"
-                                variant="outlined"
-                                label="User"
-                                type="number"
-                                required
-                                value={values.userId}
-                                onChange={handleSetFormValues}>
-                            </TextField>
-                        </Grid>
+                <Grid item xs={2}>
+                    <TextField
+                        name="userId"
+                        variant="outlined"
+                        label="User"
+                        type="number"
+                        required
+                        value={values.userId}
+                        onChange={handleSetFormValues}>
+                    </TextField>
+                </Grid>
 
-                    </Grid>
-                }
-
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => setOpen(false)}>Cancel</Button>
-                <Button onClick={() => onSave()}>Save</Button>
-            </DialogActions>
-        </Dialog >
+            </Grid>
+        </GenModal>
     )
 
 

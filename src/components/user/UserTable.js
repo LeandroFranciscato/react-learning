@@ -1,22 +1,15 @@
 
 import { Delete, Edit } from "@mui/icons-material";
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, MenuItem, TableCell, TextField } from "@mui/material";
+import { IconButton, MenuItem, TableCell } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { GenTable } from "../generic-table/GenTable";
+import { UserForm } from "./UserForm";
 
 
 export function UserTable() {
 
     const [addDialogOpened, setAddDialogOpened] = useState(false)
-    const [formErrorAlert, setFormErrorAlert] = useState("")
-    const [formValues, setFormValues] = useState({ id: "", name: "", userId: "" })
-
-    function handleSetFormValues(e) {
-        let auxValues = { ...formValues }
-        auxValues[e.target.name] = e.target.value
-        setFormValues(auxValues)
-    }
 
     const headerFields = [
         { id: "id", name: "ID" },
@@ -106,10 +99,6 @@ export function UserTable() {
         setAddDialogOpened(true)
     }
 
-    function onSaveBtnClicked() {
-        console.log(formValues)
-        setFormErrorAlert(true)
-    }
 
     const aditionalBulkActionMenus = ([
         <MenuItem key={"outra-acao-menu"} value="outra-acao">Outra Ação</MenuItem>,
@@ -132,68 +121,9 @@ export function UserTable() {
                 aditionalBulkActionMenus={aditionalBulkActionMenus}
             />
 
-
-            <Dialog open={addDialogOpened} onClose={() => setAddDialogOpened(false)}>
-                <DialogTitle>New User</DialogTitle>
-                <DialogContent>
-
-                    <Grid container spacing={2}>
-
-                        <Grid item xs={12}>
-                            {formErrorAlert &&
-                                <Alert severity="error" onClose={() => setFormErrorAlert(false)}>
-                                    Deu pau ai
-                                </Alert>
-                            }
-                        </Grid>
-
-
-                        <Grid item xs={2}>
-                            <TextField
-                                name="id"
-                                variant="outlined"
-                                label="ID"
-                                type="number"
-                                required
-                                value={formValues.id}
-                                onChange={handleSetFormValues}
-                            ></TextField>
-                        </Grid>
-
-
-                        <Grid item xs={8}>
-                            <TextField
-                                name="name"
-                                fullWidth
-                                variant="outlined"
-                                label="Name"
-                                type="text"
-                                required
-                                value={formValues.name}
-                                onChange={handleSetFormValues}>
-                            </TextField>
-                        </Grid>
-
-                        <Grid item xs={2}>
-                            <TextField
-                                name="userId"
-                                variant="outlined"
-                                label="User"
-                                type="number"
-                                required
-                                value={formValues.userId}
-                                onChange={handleSetFormValues}>
-                            </TextField>
-                        </Grid>
-
-                    </Grid>
-
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setAddDialogOpened(false)}>Cancel</Button>
-                    <Button onClick={() => onSaveBtnClicked()}>Save</Button>
-                </DialogActions>
-            </Dialog>
+            <UserForm
+                open={addDialogOpened}
+                setOpen={setAddDialogOpened} />
         </>
     )
 }

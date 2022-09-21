@@ -1,6 +1,6 @@
 
 import { Delete, Edit } from "@mui/icons-material";
-import { IconButton, MenuItem, TableCell } from "@mui/material";
+import { IconButton, TableCell } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { GenTable } from "../generic-table/GenTable";
@@ -9,7 +9,8 @@ import { UserForm } from "./UserForm";
 
 export function UserTable() {
 
-    const [addDialogOpened, setAddDialogOpened] = useState(false)
+    const [modalOpened, setModalOpened] = useState(false)
+    const [formFillUrl, setFormFillUrl] = useState("")
 
     const headerFields = [
         { id: "id", name: "ID" },
@@ -88,7 +89,8 @@ export function UserTable() {
     }
 
     function onEditBtnClicked(rowId) {
-        console.log("edit", rowId)
+        setFormFillUrl("https://jsonplaceholder.typicode.com/todos/" + rowId)
+        setModalOpened(true)
     }
 
     function onDeleteBtnClicked(rowId) {
@@ -96,14 +98,11 @@ export function UserTable() {
     }
 
     function onAddBtnClicked() {
-        setAddDialogOpened(true)
+        setFormFillUrl("")
+        setModalOpened(true)
     }
 
-
-    const aditionalBulkActionMenus = ([
-        <MenuItem key={"outra-acao-menu"} value="outra-acao">Outra Ação</MenuItem>,
-        <MenuItem key={"outra-acao2-menu"} value="outra-acao2">Outra Ação2</MenuItem>
-    ])
+    const aditionalBulkActionMenus = ([])
 
     function onBulkActionExecuted(bulkActionSelected, selectedRows) {
         console.log(bulkActionSelected)
@@ -122,8 +121,9 @@ export function UserTable() {
             />
 
             <UserForm
-                open={addDialogOpened}
-                setOpen={setAddDialogOpened} />
+                open={modalOpened}
+                setOpen={setModalOpened}
+                formFillUrl={formFillUrl} />
         </>
     )
 }
